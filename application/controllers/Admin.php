@@ -26,6 +26,21 @@ class Admin extends Application {
 	$this->render();
     }
 
+    function add()
+    {
+        $quote = $this->quotes->create();
+        $this->present($quote);
+    }
+    
+    function present($quote)
+    {
+        $this->data['fid'] = makeTextField('ID#', 'id', $quote->id);
+        $this->data['fwho'] = makeTextField('Author', 'who', $quote->who);
+        $this->data['fmug'] = makeTextField('Picture', 'mug', $quote->mug);
+        $this->data['fwhat'] = makeTextArea('The Quote', 'what', $quote->what);
+        $this->data['pagebody'] = 'quote_edit';
+        $this->render();
+    }
 }
 
 /* End of file Welcome.php */

@@ -13,4 +13,6 @@
     <td>{what}</td>
   </tr>
   {/quotes}
-</table> 
+</table>
+
+<a href='/admin/add'>Add a new quotation</a>

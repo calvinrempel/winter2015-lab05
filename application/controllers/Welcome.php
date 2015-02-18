@@ -20,8 +20,15 @@ class Welcome extends Application {
 
     function index()
     {
+        $choice = rand(1, $this->quotes->size());
+        $quote = $this->quotes->get($choice);
+        $this->data['average'] = 
+            ($quote->vote_count > 0) ? 
+                ($quote->vote_total / $quote->vote_count) : 0;
+        
 	$this->data['pagebody'] = 'justone';    // this is the view we want shown
-	$this->data = array_merge($this->data, (array) $this->quotes->last());
+	$this->caboose->needed('jrating', 'hollywood');
+        $this->data = array_merge($this->data, (array) $quote);
 	$this->render();
     }
 

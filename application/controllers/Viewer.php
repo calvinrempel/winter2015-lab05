@@ -28,11 +28,36 @@ class Viewer extends Application {
     // method to display just a single quote
     function quote($id)
     {
+        $quote = $this->quotes->get($id);
+        $this->data['average'] = 
+            ($quote->vote_count > 0) ? 
+                ($quote->vote_total / $quote->vote_count) : 0;
+        
 	$this->data['pagebody'] = 'justone';    // this is the view we want shown
-	$this->data = array_merge($this->data, (array) $this->quotes->get($id));
+	$this->caboose->needed('jrating', 'hollywood');
+        $this->data = array_merge($this->data, (array) $quote);
 	$this->render();
     }
 
+    function rate()
+    {
+        if (!isset($_POST['action']))
+            redirect("/");
+        
+        $id = intval($_POST['idBox']);
+        $rate = intval($_POST['rate']);
+        
+        $record = $this->quotes->get($id);
+        if ($record != null)
+        {
+            $record->vote_total += $rate;
+            $record->vote_count++;
+            $this->quotes->update($record);
+        }
+        
+        $response = 'Thanks for voting!';
+        echo json_encode($response);
+    }
 }
 
 /* End of file Welcome.php */
